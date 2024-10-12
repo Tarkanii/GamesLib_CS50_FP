@@ -19,26 +19,38 @@
             </button>
             <nav class="header__nav">
                 <ul class="nav-list">
+                    <li class="nav-list__element"><a class="nav-list__link" href="/">Home</a></li>
                     <li class="nav-list__element"><a class="nav-list__link" href="/my-library">My Library</a></li>
                     <li class="nav-list__element"><a class="nav-list__link" href="/logout">Log Out</a></li>
-                    <li class="nav-list__element"><a class="nav-list__link" href="/sign-up">Sign Up</a></li>
+                    <li class="nav-list__element"><a class="nav-list__link" href="/signup">Sign Up</a></li>
                     <li class="nav-list__element"><a class="nav-list__link" href="/login">Log In</a></li>
                 </ul>
             </nav>
             <nav class="nav-menu">
                 <ul class="nav-menu__list">
+                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/">Home</a></li>
                     <li class="nav-menu__list__element"><a class="nav-menu__link" href="/my-library">My Library</a></li>
                     <li class="nav-menu__list__element"><a class="nav-menu__link" href="/logout">Log Out</a></li>
-                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/sign-up">Sign Up</a></li>
+                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/signup">Sign Up</a></li>
                     <li class="nav-menu__list__element"><a class="nav-menu__link" href="/login">Log In</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-    <main>
-        {% block body %}{% endblock %}
+    <main class="main">
+        {% block main %}{% endblock %}
     </main>
     <footer></footer>
-    <script src="/static/js/script.js"></script>
+    <div class="modal-bg">
+        <div class="modal">
+            <button class="modal-close-button" id="modalCloseButton">
+                <svg class="close-button-icon">
+                    <use href="/static/img/icons.svg#icon-cross"></use>
+                </svg>
+            </button>
+            <p class="message">Wrong email or password</p>
+        </div>
+    </div>
+    <script type="module" src="/static/js/index.js"></script>
 </body>
 </html>
