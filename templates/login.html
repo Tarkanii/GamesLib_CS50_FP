@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
+{% block title%}Log In{% endblock %}
+
 {% block main %}
-    <div class="container login-container">
+    <div class="container auth-container">
         <form class="form" action="#" id="loginForm">
             <h2 class="form-title">Log In</h2>
             <div class="input-container">
@@ -13,7 +15,7 @@
                 <span class="hint" data-hint="password">Required field!</span>
             </div>
 
-            <button class="submit-button" type="submit">Submit</button>
+            <button class="submit-button" type="submit">Log In</button>
         </form>
     </div>
     <p>Don't have an account? <a href="/signup" class="form-link">Sign Up</a></p>

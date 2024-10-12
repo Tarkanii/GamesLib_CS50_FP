@@ -19,6 +19,8 @@ def login():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        return {}
+        response = make_response({"message": "Wrong email or password!"}, 400)
+        response.headers.add_header("Content-Type", "application/json")
+        return response
     else:
-        return render_template("index.html")
+        return render_template("signup.html")
