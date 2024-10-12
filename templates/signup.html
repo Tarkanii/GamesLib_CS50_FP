@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title%}Sign Up{% endblock %}
+
+{% block main %}
+<div class="container auth-container">
+    <form class="form" action="#" id="signupForm">
+        <h2 class="form-title">Sign Up</h2>
+        <div class="input-container">
+            <input class="input" required autocomplete="off" placeholder="Email"  type="text" name="email">
+            <span class="hint" data-hint="email">Email is not correct!</span>
+        </div>
+        <div class="input-container">
+            <input class="input" required autocomplete="off" placeholder="Password"  type="password" name="password">
+            <span class="hint" data-hint="password">Min length is 8 characters, no spaces!</span>
+        </div>
+        <div class="input-container">
+            <input class="input" required autocomplete="off" placeholder="Password Confirmation"  type="password" name="confirmation">
+            <span class="hint" data-hint="confirmation">Passwords should match!</span>
+        </div>
+
+        <button class="submit-button" type="submit">Sign Up</button>
+    </form>
+</div>
+<p>Already have an account? <a href="/login" class="form-link">Log In</a></p>
+<div class="signup-bg"></div>
+{% endblock %}
