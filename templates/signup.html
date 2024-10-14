@@ -4,19 +4,19 @@
 
 {% block main %}
 <div class="container auth-container">
-    <form class="form" action="#" id="signupForm">
+    <form class="form" method="post" id="signupForm">
         <h2 class="form-title">Sign Up</h2>
         <div class="input-container">
-            <input class="input" required autocomplete="off" placeholder="Email"  type="text" name="email">
-            <span class="hint" data-hint="email">Email is not correct!</span>
+            <input class="input" required autocomplete="off" placeholder="Email"  type="text" name="email" value="{{ values.email }}">
+            {% if hints.email %}<span class="hint">{{ hints.email }}</span>{% endif %}
         </div>
         <div class="input-container">
-            <input class="input" required autocomplete="off" placeholder="Password"  type="password" name="password">
-            <span class="hint" data-hint="password">Min length is 8 characters, no spaces!</span>
+            <input class="input" required autocomplete="off" placeholder="Password"  type="password" name="password" value="{{ values.password }}">
+            {% if hints.password %}<span class="hint">{{ hints.password }}</span>{% endif %}
         </div>
         <div class="input-container">
-            <input class="input" required autocomplete="off" placeholder="Password Confirmation"  type="password" name="confirmation">
-            <span class="hint" data-hint="confirmation">Passwords should match!</span>
+            <input class="input" required autocomplete="off" placeholder="Password Confirmation"  type="password" name="confirmation" value="{{ values.confirmation }}">
+            {% if hints.confirmation %}<span class="hint">{{ hints.confirmation }}</span>{% endif %}
         </div>
 
         <button class="submit-button" type="submit">Sign Up</button>
