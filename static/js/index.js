@@ -8,4 +8,3 @@ document.addEventListener("DOMContentLoaded", () => {
     loginHandler();
     signupHandler();
 })
-

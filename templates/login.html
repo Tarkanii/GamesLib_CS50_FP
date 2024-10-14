@@ -4,15 +4,15 @@
 
 {% block main %}
     <div class="container auth-container">
-        <form class="form" action="#" id="loginForm">
+        <form class="form" method="post" id="loginForm">
             <h2 class="form-title">Log In</h2>
             <div class="input-container">
-                <input class="input" required autocomplete="off" placeholder="Email"  type="text" name="email">
-                <span class="hint" data-hint="email">Email is not correct!</span>
+                <input class="input" required autocomplete="off" placeholder="Email"  type="text" name="email" value="{{ email }}">
+                {% if hints.email %}<span class="hint">{{ hints.email }}</span>{% endif %}
             </div>
             <div class="input-container">
                 <input class="input" required autocomplete="off" placeholder="Password"  type="password" name="password">
-                <span class="hint" data-hint="password">Required field!</span>
+                {% if hints.password %}<span class="hint">{{ hints.password }}</span>{% endif %}
             </div>
 
             <button class="submit-button" type="submit">Log In</button>
