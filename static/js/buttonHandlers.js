@@ -7,10 +7,10 @@ export function burgerMenuHandler() {
 
         if (menu.classList.contains("open")) {
             setTimeout(() => menu.classList.add("move"), 0);
-            menuButton.querySelector("use").setAttribute("href", "/static/img/icons.svg#icon-cross")
+            menuButton.querySelector("use").setAttribute("href", "/static/img/icons/icons.svg#icon-cross")
         } else {
             menu.classList.remove("move");
-            menuButton.querySelector("use").setAttribute("href", "/static/img/icons.svg#icon-menu")
+            menuButton.querySelector("use").setAttribute("href", "/static/img/icons/icons.svg#icon-menu")
         }
     })
 }
