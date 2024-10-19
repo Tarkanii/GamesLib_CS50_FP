@@ -32,14 +32,14 @@
                             {% endif %}
                         {% endif %}
                         {% if game.metacritic %}
-                            <span class="game-card__metacritic-rating {{ game.metacritic_style }}">
+                            <span class="metacritic-rating {{ game.metacritic_style }}">
                                 {{ game.metacritic }}
                             </span>
                         {% endif %}
                     </div>
                     
 
-                    <a href="/" class="game-card__title">
+                    <a href="/games/{{ game.id }}" class="game-card__title">
                         {{ game.title }}
                     {% if game.rating %}
                         <img class="game-card__rating" src="/static/img/ratings/{{ game.rating }}.png" alt="{{ game.rating }}">
@@ -59,7 +59,7 @@
                                 <p class="key">Genres</p>
                                 <ul class="values">
                                     {% for genre in game.genres %}
-                                    <a href="/">{{ genre }}</a>
+                                        <li><a href="/">{{ genre }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </li>

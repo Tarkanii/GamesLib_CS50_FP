@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response, render_template
+from flask import Blueprint, redirect, request, make_response, render_template
 from flask_login import login_required, current_user
 from requests import get
 import datetime
@@ -9,6 +9,10 @@ GENRES_MAX = 3
 
 @main.route("/")
 def index():
+    return redirect("/games")
+
+@main.route("/games")
+def games():
     res = get(get_url("games"))
 
     if res.status_code == 200:
@@ -16,6 +20,15 @@ def index():
         games = list(map(get_gamecard_info, data["results"]))
 
     return render_template("index.html", user = current_user, games = games)
+
+@main.route("/games/<game_id>")
+def game(game_id):
+    res = get(get_url(f"games/{game_id}"))
+
+    if res.status_code == 200:
+        data = res.json()
+
+    return render_template("game-page.html", user = current_user, game = get_game_content(data))
 
 @main.route("/my-library")
 @login_required
@@ -65,6 +78,7 @@ def get_gamecard_info(game):
         date = datetime.date(int(date_split[0]), int(date_split[1]), int(date_split[2])).strftime("%b %d, %Y")
 
     return {
+        "id": game["id"],
         "title": game["name"] or "",
         "img": game["background_image"] or None,
         "platforms": platforms[:PLATFORMS_MAX],
@@ -74,4 +88,89 @@ def get_gamecard_info(game):
         "metacritic_style": metacritic_style,
         "released": date,
         "genres": genres[:GENRES_MAX]
+    }
+
+def get_game_content(game):
+    date = None
+    parent_platforms = []
+    platforms = []
+    genres = []
+    developers = []
+    publishers = []
+    metacritic_style = ""
+    top_rating = ""
+    bar_ratings = { 
+        "exceptional": {
+            "count": "",
+            "percent": 0
+        },
+        "recommended": {
+            "count": "",
+            "percent": 0
+        },
+        "meh": {
+            "count": "",
+            "percent": 0
+        },
+        "skip": {
+            "count": "",
+            "percent": 0
+        },
+    }
+
+    for platform in game["parent_platforms"]:
+        if platform["platform"]["slug"] != "neo-geo" and platform["platform"]["slug"] != "3do":
+            parent_platforms.append(platform["platform"]["slug"])
+
+    for platform in game["platforms"]:    
+        platforms.append(platform["platform"]["name"])
+
+    for genre in game["genres"]:
+        genres.append(genre["name"])
+    
+    for developer in game["developers"]:
+        developers.append(developer["name"])
+
+    for publisher in game["publishers"]:
+        publishers.append(publisher["name"])
+
+    if game["metacritic"]:
+        if game["metacritic"] > 75:
+            metacritic_style = "good"
+        elif game["metacritic"] > 25:
+            metacritic_style = "mid"
+        else:
+            metacritic_style = "bad"
+
+    for rating in game["ratings"]: 
+        if rating["id"] == game["rating_top"]:
+            top_rating = rating["title"]
+
+    for rating in game["ratings"]: 
+        bar_ratings[rating["title"]]["count"] = rating["count"]
+        bar_ratings[rating["title"]]["percent"] = rating["percent"]
+
+    if game["released"]:
+        date_split = game["released"].split("-")
+        date = datetime.date(int(date_split[0]), int(date_split[1]), int(date_split[2])).strftime("%b %d, %Y")
+
+    return {
+        "id": game["id"],
+        "title": game["name"] or "",
+        "bg": game["background_image"] or None,
+        "parent_platforms": parent_platforms,
+        "platforms": platforms,
+        "top_rating": top_rating,
+        "ratings": game["ratings"],
+        "ratings_count": game["ratings_count"],
+        "metacritic": game["metacritic"] or None,
+        "metacritic_style": metacritic_style,
+        "released": date,
+        "genres": genres,
+        "developers": developers,
+        "publishers": publishers,
+        "playtime": game["playtime"] or None,
+        "bar_ratings": bar_ratings,
+        "description": game["description_raw"] or "",
+        "website": game["website"] or ""
     }

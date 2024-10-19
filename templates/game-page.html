@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ game.title }}{% endblock %}
+
+{% block main %}
+
+    <div class="container">
+        <a href="/games" class="back-button">
+            <svg class="back-icon">
+                <use href="/static/img/icons/icons.svg#icon-back"></use>
+            </svg>
+            Back to games
+        </a>
+        <div class="page-header-info">
+            <span class="release-date">
+                {{ game.released }}
+            </span>
+            {% if game.parent_platforms|length > 0 %}
+                <ul class="platform-list">
+                    {% for platform in game.parent_platforms %}
+                        <li class="platform">
+                            <svg class="platform-icon">
+                                <use href="/static/img/icons/icons.svg#icon-{{ platform }}"></use>
+                            </svg>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if game.playtime %}
+                <p class="playtime">average playtime: {{ game.playtime }} hours</p>
+            {% endif %}
+        </div>
+        <h1 class="page-title">{{ game.title }}</h1>
+        <button class="library-button page-button">Save to library</button>
+        <div class="rating-wrapper">
+            {% if game.ratings_count > 0 %}
+                <p class="game-rating">
+                    {{ game.top_rating }}
+                    {% if game.top_rating %}
+                        <img class="game-rating-img" src="/static/img/ratings/{{ game.top_rating }}.png" alt="{{ game.top_rating }}">
+                    {% endif %}
+                </p>
+            {% else %}
+                <p class="game-rating">
+                    Not rated yet
+                    <img class="game-rating-img" src="/static/img/ratings/nothing-found.png" alt="No reviews yet">
+                </p>
+            {% endif %}
+            <p class="ratings-count">{{ game.ratings_count }} ratings</p>
+            {% if game.ratings_count > 0 %}
+                <div class="rating-bar">
+                    <div class="rating-bar-element exceptional" style="width: {{ game.bar_ratings.exceptional.percent }}%;"></div>
+                    <div class="rating-bar-element recommended" style="width: {{ game.bar_ratings.recommended.percent }}%;"></div>
+                    <div class="rating-bar-element meh" style="width: {{ game.bar_ratings.meh.percent }}%;"></div>
+                    <div class="rating-bar-element skip" style="width: {{ game.bar_ratings.skip.percent }}%;"></div>
+                </div>
+            {% else %}
+                <div class="rating-bar">
+                    <div class="rating-bar-element not-found" style="width: 100%;"><p class="no-reviews">No reviews</p></div>
+                </div>
+            {% endif %}
+            <ul class="ratings-count-list">
+                <li class="ratings-count-element exceptional">exceptional <span class="count">{{ game.bar_ratings.exceptional.count }}</span></li>
+                <li class="ratings-count-element recommended">recommended <span class="count">{{ game.bar_ratings.recommended.count }}</span></li>
+                <li class="ratings-count-element meh">meh <span class="count">{{ game.bar_ratings.meh.count }}</span></li>
+                <li class="ratings-count-element skip">skip <span class="count">{{ game.bar_ratings.skip.count }}</span></li>
+            </ul>
+        </div>
+        <div class="about-wrapper">
+            <h2 class="about-title">About</h2>
+            {% if game.description %}
+                <div class="about-description">{{ game.description }}</div>
+                <button class="read-more-btn">Read more</button>
+            {% endif %}
+        </div>
+        <div class="page-aditional-info-wrapper">
+            <ul class="page-additional-info__list">
+                <li class="element">
+                    <h3 class="title">Platforms</h3>
+                    <ul class="list">
+                        {% for platform in game.platforms %}
+                            <li class="iterable-value">{{ platform }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                {% if game.metacritic %}
+                    <li class="element">
+                        <h3 class="title">Metascore</h3>
+                        <span class="metacritic-rating {{ game.metacritic_style }}">{{ game.metacritic }}</span>
+                    </li>
+                {% endif %}
+
+                <li class="element">
+                    <h3 class="title">Release date</h3>
+                    <p>{{ game.released }}</p>
+                </li>
+
+                {% if game.genres|length > 0 %}
+                    <li class="element">
+                        <h3 class="title">Genres</h3>
+                        <ul class="list">
+                            {% for genre in game.genres %}
+                                <li class="iterable-value"><a href="/" class="link">{{ genre }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if game.developers|length > 0 %}
+                    <li class="element">
+                        <h3 class="title">Developers</h3>
+                        <ul class="list">
+                            {% for developer in game.developers %}
+                                <li class="iterable-value">{{ developer }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if game.publishers|length > 0 %}
+                    <li class="element">
+                        <h3 class="title">Publishers</h3>
+                        <ul class="list">
+                            {% for publisher in game.publishers %}
+                                <li class="iterable-value">{{ publisher }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if game.website %}
+                    <li class="element">
+                        <h3 class="title">Website</h3>
+                        <a class="link" href="{{ game.website }}" target="blank">{{ game.website }}</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+    {% if game.bg %}
+        <div class="game-bg" data-url="{{ game.bg }}">
+        </div>
+    {% endif %}
+{% endblock %}
