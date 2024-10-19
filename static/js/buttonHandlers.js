@@ -24,6 +24,32 @@ export function modalCloseButtonHandler() {
     })
 }
 
+export function readMoreButtonHandler() {
+    const description = document.querySelector(".about-description");
+    if (!description) return;
+
+    const full_text = description.innerHTML;
+    const readMoreButton = document.querySelector(".read-more-btn");
+    if (full_text.length < 255) {
+        readMoreButton.style.display = "none";
+        return;
+    }
+
+    description.innerHTML = full_text.slice(0, 255) + "...";
+    readMoreButton.addEventListener("click", () => {
+        description.classList.toggle("open");
+
+        if (description.classList.contains("open")) {
+            description.innerHTML = full_text;
+            readMoreButton.innerHTML = "Show less";
+        } else {
+            description.innerHTML = full_text.slice(0, 255) + "...";
+            readMoreButton.innerHTML = "Read more";
+        }
+        
+    })
+}
+
 export class LoadingButtonHandler {
     text = "";
     element = null;
