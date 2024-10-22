@@ -90,7 +90,11 @@ body {
     transition: stroke var(--transition);
 }
 
-#search {
+#searchForm {
+    margin-right: 10px;
+}
+
+.search {
     color: var(--light-text-color);
     font-size: var(--fs-l);
     padding: 10px;
@@ -100,16 +104,15 @@ body {
     width: 100%;
     min-width: 20px;
     max-width: 200px;
-    margin-right: 10px;
     transition: background-color var(--transition);
 }
 
-#search:hover, #search:focus  {
+.search:hover, .search:focus  {
     color: var(--dark-text-color);
     background-color: var(--elements-bg-hover);
 }
 
-#search::-webkit-search-cancel-button{
+.search::-webkit-search-cancel-button{
     cursor: pointer;
     -webkit-appearance: none;
     width: 20px;
@@ -179,6 +182,32 @@ body {
     font-size: var(--fs-xxl);
     font-weight: 700;
     margin-bottom: 30px;
+}
+
+.search-title {
+    color: var(--light-text-color);
+    font-size: var(--fs-xxl);
+    font-weight: 500;
+    margin-bottom: 30px;
+    word-break: break-word;
+    text-wrap: wrap;
+}
+
+.not-found-title {
+    color: var(--light-text-color);
+    font-size: var(--fs-xxl);
+    font-weight: 500;
+}
+
+.not-found-title:after {
+    content: "";
+    display: inline-block;
+    position: relative;
+    top: 10px;
+    height: 45px;
+    width: 45px;
+    background-image: url(/static/img/ratings/nothing-found.png);
+    background-size: contain;
 }
 
 /* GAMES LIST */
@@ -861,6 +890,7 @@ body {
 @media screen and (min-width: 768px) {
 
     .container {
+        padding: 0 30px;
         max-width: 768px;
     }
 
@@ -873,13 +903,16 @@ body {
         margin-right: 20px;
     }
 
-    #search {
+    #searchForm {
+        margin-right: unset;
+    }
+
+    .search {
         font-size: var(--fs-l);
         font-weight: 400;
         padding: 10px 15px;
         border-radius: 20px;
         max-width: 300px;
-        margin-right: unset;
     }
 
     .header__menu-button {
@@ -892,6 +925,10 @@ body {
     }
 
     .page-title {
+        font-size: var(--fs-g);
+    }
+
+    .search-title {
         font-size: var(--fs-g);
     }
 

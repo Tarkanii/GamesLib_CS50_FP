@@ -12,9 +12,12 @@
             Back to games
         </a>
         <div class="page-header-info">
-            <span class="release-date">
-                {{ game.released }}
-            </span>
+            {% if game.released %}
+                <span class="release-date">
+                    {{ game.released }}
+                </span>
+            {% endif %}
+
             {% if game.parent_platforms|length > 0 %}
                 <ul class="platform-list">
                     {% for platform in game.parent_platforms %}
@@ -91,10 +94,12 @@
                     </li>
                 {% endif %}
 
-                <li class="element">
-                    <h3 class="title">Release date</h3>
-                    <p>{{ game.released }}</p>
-                </li>
+                {% if game.released %}
+                    <li class="element">
+                        <h3 class="title">Release date</h3>
+                        <p>{{ game.released }}</p>
+                    </li>
+                {% endif %}
 
                 {% if game.genres|length > 0 %}
                     <li class="element">
