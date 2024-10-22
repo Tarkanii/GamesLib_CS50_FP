@@ -5,7 +5,7 @@ import datetime
 
 main = Blueprint("main", __name__)
 PLATFORMS_MAX = 5
-GENRES_MAX = 3
+GENRES_MAX = 2
 
 @main.route("/")
 def index():
@@ -13,13 +13,18 @@ def index():
 
 @main.route("/games")
 def games():
-    res = get(get_url("games"))
+    search = request.args.get("search")
+    if search:
+        url = get_url("games", { "search": search })
+    else:
+        url = get_url("games")
 
+    res = get(url)
     if res.status_code == 200:
         data = res.json()
         games = list(map(get_gamecard_info, data["results"]))
 
-    return render_template("index.html", user = current_user, games = games)
+    return render_template("index.html", user = current_user, games = games, search = search)
 
 @main.route("/games/<game_id>")
 def game(game_id):
@@ -51,9 +56,10 @@ def get_gamecard_info(game):
     genres = []
     metacritic_style = ""
 
-    for platform in game["parent_platforms"]:
-        if platform["platform"]["slug"] != "neo-geo" and platform["platform"]["slug"] != "3do":
-            platforms.append(platform["platform"]["slug"])
+    if "parent_platforms" in game:
+        for platform in game["parent_platforms"]:
+            if platform["platform"]["slug"] != "neo-geo" and platform["platform"]["slug"] != "3do":
+                platforms.append(platform["platform"]["slug"])
 
     for genre in game["genres"]:
         genres.append(genre["name"])
@@ -62,7 +68,7 @@ def get_gamecard_info(game):
         if game_rating["id"] == game["rating_top"]:
             rating = game_rating["title"]
 
-    if len(game["parent_platforms"]) - PLATFORMS_MAX > 0:
+    if "parent_platforms" in game and len(game["parent_platforms"]) - PLATFORMS_MAX > 0:
         diff = f"+{len(game["parent_platforms"]) - PLATFORMS_MAX}"
 
     if game["metacritic"]:

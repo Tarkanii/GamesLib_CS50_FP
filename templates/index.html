@@ -5,72 +5,81 @@
 {% block main %}
 
     <div class="container">
-        <h1 class="page-title">All Games</h1>
-        <ul class="games-list">
-            {% for game in games %}
+        {% if search %}
+            <h1 class="search-title">Search "{{ search }}"</h1>
+        {% else %}
+            <h1 class="page-title">All Games</h1>
+        {% endif %}
+        
+        {% if games|length > 0 %}
+            <ul class="games-list">
+                {% for game in games %}
 
-            <li class="game-card">
+                <li class="game-card">
 
-                {% if game.img %}
-                    <img class="game-card__img" height="50px" width="100px" src="{{ game.img }}" alt="{{ game.title }}">
-                {% endif %}
-
-                <div class="game-card__info">
-                    <div class="game-card__header">
-                        {% if game.platforms|length > 1 %}
-                            <ul class="game-card__platforms-list">
-                                {% for platform in game.platforms %}
-                                    <li class="platform">
-                                        <svg class="platform-icon">
-                                            <use href="/static/img/icons/icons.svg#icon-{{ platform }}"></use>
-                                        </svg>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                            {% if game.diff|length > 0 %}
-                                <p class="diff">{{ game.diff }}</p>
-                            {% endif %}
-                        {% endif %}
-                        {% if game.metacritic %}
-                            <span class="metacritic-rating {{ game.metacritic_style }}">
-                                {{ game.metacritic }}
-                            </span>
-                        {% endif %}
-                    </div>
-                    
-
-                    <a href="/games/{{ game.id }}" class="game-card__title">
-                        {{ game.title }}
-                    {% if game.rating %}
-                        <img class="game-card__rating" src="/static/img/ratings/{{ game.rating }}.png" alt="{{ game.rating }}">
+                    {% if game.img %}
+                        <img class="game-card__img" height="50px" width="100px" src="{{ game.img }}" alt="{{ game.title }}">
                     {% endif %}
-                    </a>
-                </div>
-                <div class="game-card__additional-info">
-                    <ul class="additional-info-list">
-                        {% if game.released %}
-                            <li class="info-wrapper">
-                                <p class="key">Release Date:</p>
-                                <p class="value">{{ game.released }}</p>
-                            </li>
-                        {% endif %}
-                        {% if game.genres|length > 0 %}
-                            <li class="info-wrapper">
-                                <p class="key">Genres</p>
-                                <ul class="values">
-                                    {% for genre in game.genres %}
-                                        <li><a href="/">{{ genre }}</a></li>
+
+                    <div class="game-card__info">
+                        <div class="game-card__header">
+                            {% if game.platforms|length > 1 %}
+                                <ul class="game-card__platforms-list">
+                                    {% for platform in game.platforms %}
+                                        <li class="platform">
+                                            <svg class="platform-icon">
+                                                <use href="/static/img/icons/icons.svg#icon-{{ platform }}"></use>
+                                            </svg>
+                                        </li>
                                     {% endfor %}
                                 </ul>
-                            </li>
-                        {% endif %}
-                    </ul>
-                    
-                    <button class="library-button">Save to library</button>
-                </div>
-            </li>
+                                {% if game.diff|length > 0 %}
+                                    <p class="diff">{{ game.diff }}</p>
+                                {% endif %}
+                            {% endif %}
+                            {% if game.metacritic %}
+                                <span class="metacritic-rating {{ game.metacritic_style }}">
+                                    {{ game.metacritic }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        
 
-            {% endfor %}
-        </ul>
+                        <a href="/games/{{ game.id }}" class="game-card__title">
+                            {{ game.title }}
+                        {% if game.rating %}
+                            <img class="game-card__rating" src="/static/img/ratings/{{ game.rating }}.png" alt="{{ game.rating }}">
+                        {% endif %}
+                        </a>
+                    </div>
+                    <div class="game-card__additional-info">
+                        <ul class="additional-info-list">
+                            {% if game.released %}
+                                <li class="info-wrapper">
+                                    <p class="key">Release Date:</p>
+                                    <p class="value">{{ game.released }}</p>
+                                </li>
+                            {% endif %}
+                            {% if game.genres|length > 0 %}
+                                <li class="info-wrapper">
+                                    <p class="key">Genres</p>
+                                    <ul class="values">
+                                        {% for genre in game.genres %}
+                                            <li><a href="/">{{ genre }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        
+                        <button class="library-button">Save to library</button>
+                    </div>
+                </li>
+
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2 class="not-found-title">No games found</h2>
+        {% endif %}
     </div>
 {% endblock %}

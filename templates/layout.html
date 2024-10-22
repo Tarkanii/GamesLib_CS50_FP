@@ -11,7 +11,9 @@
     <header class="header">
         <div class="container">
             <a href="/" class="logo">GamesLib</a>
-            <input id="search" autocomplete="off" type="search" placeholder="Search">
+            <form action="/games" id="searchForm">
+                <input class="search" autocomplete="off" type="search" name="search" placeholder="Search">
+            </form>
             <button class="header__menu-button">
                 <svg width="40" height="40" class="menu-icon">
                     <use href="/static/img/icons/icons.svg#icon-menu"></use>
@@ -20,9 +22,11 @@
             <nav class="header__nav">
                 <ul class="nav-list">
                     {% if user.is_authenticated %}
+                    <li class="nav-list__element"><a class="nav-list__link" href="/games">All Games</a></li>
                     <li class="nav-list__element"><a class="nav-list__link" href="/my-library">My Library</a></li>
                     <li class="nav-list__element"><a class="nav-list__link" href="/logout">Log Out</a></li>
                     {% else %}
+                    <li class="nav-list__element"><a class="nav-list__link" href="/games">All Games</a></li>
                     <li class="nav-list__element"><a class="nav-list__link" href="/login">Log In</a></li>
                     <li class="nav-list__element"><a class="nav-list__link" href="/signup">Sign Up</a></li>
                     {% endif %}
@@ -31,9 +35,11 @@
             <nav class="nav-menu">
                 <ul class="nav-menu__list">
                     {% if user.is_authenticated %}
+                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
                     <li class="nav-menu__list__element"><a class="nav-menu__link" href="/my-library">My Library</a></li>
                     <li class="nav-menu__list__element"><a class="nav-menu__link" href="/logout">Log Out</a></li>
                     {% else %}
+                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
                     <li class="nav-menu__list__element"><a class="nav-menu__link" href="/login">Log In</a></li>
                     <li class="nav-menu__list__element"><a class="nav-menu__link" href="/signup">Sign Up</a></li>
                     {% endif %}
