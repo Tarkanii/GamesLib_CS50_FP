@@ -145,7 +145,7 @@
         </div>
     </div>
     {% if game.bg %}
-        <div class="game-bg" data-url="{{ game.bg }}">
-        </div>
+        <div class="game-bg-tint"></div>
+        <div class="game-bg" style="background-image: url({{ game.bg }});"></div>
     {% endif %}
 {% endblock %}

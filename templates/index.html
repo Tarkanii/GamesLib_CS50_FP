@@ -19,7 +19,7 @@
                     <li class="game-card">
 
                         {% if game.img %}
-                            <img class="game-card__img" height="50px" width="100px" src="{{ game.img }}" alt="{{ game.title }}">
+                            <div class="game-card__img" style="background-image: url({{ game.img }});"></div>
                         {% endif %}
 
                         <div class="game-card__info">

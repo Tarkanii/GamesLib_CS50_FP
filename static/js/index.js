@@ -1,7 +1,6 @@
 import { loginHandler } from "./login.js";
 import { signupHandler } from "./signup.js";
-import { burgerMenuHandler, modalCloseButtonHandler, readMoreButtonHandler, backButtonHandler } from "./buttonHandlers.js";
-import { setGamePageBackground } from "./gamePage.js";
+import { burgerMenuHandler, modalCloseButtonHandler, readMoreButtonHandler, backButtonHandler, paginationButtonHandler } from "./buttonHandlers.js";
 import { searchSubmitHandler } from "./search.js";
 import { setPrevUrl } from "./setPreviousUrl.js";
 
@@ -10,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     modalCloseButtonHandler();
     loginHandler();
     signupHandler();
-    setGamePageBackground();
     readMoreButtonHandler();
     searchSubmitHandler();
     backButtonHandler();
+    paginationButtonHandler();
     setPrevUrl();
 })

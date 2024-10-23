@@ -6,7 +6,7 @@ import math
 
 main = Blueprint("main", __name__)
 PLATFORMS_MAX = 5
-GENRES_MAX = 2
+GENRES_MAX = 3
 PAGE_SIZE = 20.0
 
 @main.route("/")
