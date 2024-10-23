@@ -212,10 +212,17 @@ body {
 
 /* GAMES LIST */
 
+.games-list-container {
+    padding: 0 0 150px;
+}
+
 .games-list {
     display: flex;
     flex-direction: column;
-    padding: 0 0 150px;
+}
+
+.games-list:not(:last-child) {
+    margin-bottom: 20px;
 }
 
 .game-card {
@@ -243,15 +250,15 @@ body {
     padding: 15px;
 }
 
-.game-card__title {
+.game-card__link {
     font-size: var(--fs-xl);
     font-weight: 500;
     color: var(--light-text-color);
     transition: color var(--transition);
 }
 
-.game-card__title:hover,
-.game-card__title:focus {
+.game-card__link:hover,
+.game-card__link:focus {
     cursor: pointer;
     color: var(--secondary-text-color);
 }
@@ -265,8 +272,8 @@ body {
     transition: opacity var(--transition);
 }
 
-.game-card__title:hover .game-card__rating,
-.game-card__title:focus .game-card__rating {
+.game-card__link:hover .game-card__rating,
+.game-card__link:focus .game-card__rating {
     opacity: 0.5;
 }
 
@@ -398,6 +405,33 @@ body {
 
 .library-button:hover, .library-button:focus {
     cursor: pointer;
+    color: var(--dark-text-color);
+    background-color: var(--elements-bg-hover);
+}
+
+.pagination-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.pagination-list__element:not(:last-child) {
+    margin-right: 10px;
+}
+
+.pagination-button, .pagination-list__element.space {
+    color: var(--light-text-color);
+    background-color: var(--elements-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    transition: color var(--transition), background-color var(--transition);
+}
+
+.pagination-button:hover, .pagination-button:focus, .pagination-button.active {
     color: var(--dark-text-color);
     background-color: var(--elements-bg-hover);
 }
@@ -990,6 +1024,12 @@ body {
         width: calc(100% / 4 - 30px);
         margin-right: 30px;
         margin-bottom: 30px;
+    }
+
+    .pagination-button, .pagination-list__element.space {
+        font-size: var(--fs-l);
+        height: 50px;
+        width: 50px;
     }
 }
 

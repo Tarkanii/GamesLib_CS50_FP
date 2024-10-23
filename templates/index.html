@@ -12,72 +12,105 @@
         {% endif %}
         
         {% if games|length > 0 %}
-            <ul class="games-list">
-                {% for game in games %}
+            <div class="games-list-container">
+                <ul class="games-list">
+                    {% for game in games %}
 
-                <li class="game-card">
+                    <li class="game-card">
 
-                    {% if game.img %}
-                        <img class="game-card__img" height="50px" width="100px" src="{{ game.img }}" alt="{{ game.title }}">
-                    {% endif %}
-
-                    <div class="game-card__info">
-                        <div class="game-card__header">
-                            {% if game.platforms|length > 1 %}
-                                <ul class="game-card__platforms-list">
-                                    {% for platform in game.platforms %}
-                                        <li class="platform">
-                                            <svg class="platform-icon">
-                                                <use href="/static/img/icons/icons.svg#icon-{{ platform }}"></use>
-                                            </svg>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                                {% if game.diff|length > 0 %}
-                                    <p class="diff">{{ game.diff }}</p>
-                                {% endif %}
-                            {% endif %}
-                            {% if game.metacritic %}
-                                <span class="metacritic-rating {{ game.metacritic_style }}">
-                                    {{ game.metacritic }}
-                                </span>
-                            {% endif %}
-                        </div>
-                        
-
-                        <a href="/games/{{ game.id }}" class="game-card__title">
-                            {{ game.title }}
-                        {% if game.rating %}
-                            <img class="game-card__rating" src="/static/img/ratings/{{ game.rating }}.png" alt="{{ game.rating }}">
+                        {% if game.img %}
+                            <img class="game-card__img" height="50px" width="100px" src="{{ game.img }}" alt="{{ game.title }}">
                         {% endif %}
-                        </a>
-                    </div>
-                    <div class="game-card__additional-info">
-                        <ul class="additional-info-list">
-                            {% if game.released %}
-                                <li class="info-wrapper">
-                                    <p class="key">Release Date:</p>
-                                    <p class="value">{{ game.released }}</p>
-                                </li>
-                            {% endif %}
-                            {% if game.genres|length > 0 %}
-                                <li class="info-wrapper">
-                                    <p class="key">Genres</p>
-                                    <ul class="values">
-                                        {% for genre in game.genres %}
-                                            <li><a href="/">{{ genre }}</a></li>
+
+                        <div class="game-card__info">
+                            <div class="game-card__header">
+                                {% if game.platforms|length > 1 %}
+                                    <ul class="game-card__platforms-list">
+                                        {% for platform in game.platforms %}
+                                            <li class="platform">
+                                                <svg class="platform-icon">
+                                                    <use href="/static/img/icons/icons.svg#icon-{{ platform }}"></use>
+                                                </svg>
+                                            </li>
                                         {% endfor %}
                                     </ul>
+                                    {% if game.diff|length > 0 %}
+                                        <p class="diff">{{ game.diff }}</p>
+                                    {% endif %}
+                                {% endif %}
+                                {% if game.metacritic %}
+                                    <span class="metacritic-rating {{ game.metacritic_style }}">
+                                        {{ game.metacritic }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            
+
+                            <a href="/games/{{ game.id }}" class="game-card__link">
+                                {{ game.title }}
+                            {% if game.rating %}
+                                <img class="game-card__rating" src="/static/img/ratings/{{ game.rating }}.png" alt="{{ game.rating }}">
+                            {% endif %}
+                            </a>
+                        </div>
+                        <div class="game-card__additional-info">
+                            <ul class="additional-info-list">
+                                {% if game.released %}
+                                    <li class="info-wrapper">
+                                        <p class="key">Release Date:</p>
+                                        <p class="value">{{ game.released }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if game.genres|length > 0 %}
+                                    <li class="info-wrapper">
+                                        <p class="key">Genres</p>
+                                        <ul class="values">
+                                            {% for genre in game.genres %}
+                                                <li><a href="/">{{ genre }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                            
+                            <button class="library-button">Save to library</button>
+                        </div>
+                    </li>
+
+                    {% endfor %}
+                </ul>
+                {% if pagination %}
+
+                    <ul class="pagination-list">
+                        {% for page in pagination.pages_arr %}
+                   
+                            {% if page == pagination.max_page and pagination.spaces[1] %}
+                                <li class="pagination-list__element space">
+                                    ...
                                 </li>
                             {% endif %}
-                        </ul>
-                        
-                        <button class="library-button">Save to library</button>
-                    </div>
-                </li>
-
-                {% endfor %}
-            </ul>
+                            <li class="pagination-list__element">
+                                {% if page == pagination.current_page %}
+                                    <span class="pagination-button active">
+                                        {{ page }}
+                                    </span>
+                                {% else %}
+                                    <a class="pagination-button" href="{{ pagination.url + page }}">
+                                        {{ page }}
+                                    </a>
+                                {% endif %}
+                            </li>          
+                            {% if page == "1" and pagination.spaces[0] %}
+                                <li class="pagination-list__element space">
+                                    ...
+                                </li>
+                            {% endif %}
+                          
+                        {% endfor %}
+                    </ul>
+        
+                {% endif %}
+            </div>
         {% else %}
             <h2 class="not-found-title">No games found</h2>
         {% endif %}

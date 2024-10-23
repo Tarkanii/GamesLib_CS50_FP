@@ -50,6 +50,14 @@ export function readMoreButtonHandler() {
     })
 }
 
+export function backButtonHandler() {
+    const backButton = document.querySelector(".back-button");
+    if (!backButton) return;
+
+    if (!sessionStorage.getItem("prevUrl")) return;
+    backButton.setAttribute("href", sessionStorage.getItem("prevUrl"));
+}
+
 export class LoadingButtonHandler {
     text = "";
     element = null;
