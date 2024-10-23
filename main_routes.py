@@ -2,10 +2,12 @@ from flask import Blueprint, redirect, request, make_response, render_template
 from flask_login import login_required, current_user
 from requests import get
 import datetime
+import math
 
 main = Blueprint("main", __name__)
 PLATFORMS_MAX = 5
 GENRES_MAX = 2
+PAGE_SIZE = 20.0
 
 @main.route("/")
 def index():
@@ -13,18 +15,22 @@ def index():
 
 @main.route("/games")
 def games():
-    search = request.args.get("search")
+
+    page = request.args.get("page") or 1
+    search = request.args.get("search") or None
     if search:
-        url = get_url("games", { "search": search })
+        url = get_url("games", { "search": search, "page_size": PAGE_SIZE, "page": page })
     else:
-        url = get_url("games")
+        url = get_url("games", { "page_size": PAGE_SIZE, "page": page })
 
     res = get(url)
     if res.status_code == 200:
         data = res.json()
+        pagination = get_pagination(data["count"], PAGE_SIZE, page, search)
+
         games = list(map(get_gamecard_info, data["results"]))
 
-    return render_template("index.html", user = current_user, games = games, search = search)
+    return render_template("index.html", user = current_user, games = games, search = search, pagination = pagination)
 
 @main.route("/games/<game_id>")
 def game(game_id):
@@ -47,6 +53,62 @@ def get_url(path, queries = {}):
         query_params += f"&{key}={queries[key]}"
 
     return f"https://api.rawg.io/api/{path}?key=8ed35e34b6b447caa2701e9830460026{query_params}"
+
+def get_pagination(count, page_size, current_page, search):
+    if count <= page_size:
+        return None
+    
+    current_page = int(current_page)
+
+    if search:
+        url = f"/games?search={search}&page="
+    else:
+        url = "/games?page="
+
+    max_page = math.ceil(count / page_size)
+    pages_arr = []
+    if max_page <= 5:
+        i = 1
+        while i <= max_page:
+            pages_arr.append(str(i))
+            i += 1
+
+        return {
+            "url": url,
+            "max_page": str(max_page),
+            "pages_arr": pages_arr,
+            "current_page": str(current_page),
+            "spaces": [False, False]
+        }
+
+    spaces = []
+    if current_page - 1 >= 3 and max_page - current_page >= 3:
+        spaces = [True, True]
+        pages_arr = [1, current_page - 1, current_page, current_page + 1, max_page]
+    elif current_page - 1 <= 3 and max_page - current_page >= 3:
+        spaces = [False, True]
+        i = 1
+        while i <= 4:
+            pages_arr.append(i)
+            i += 1
+
+        pages_arr.append(max_page)
+    else:
+        spaces = [True, False]
+        pages_arr.append(1)
+        i = max_page - 4
+        while i <= max_page:
+            pages_arr.append(i)
+            i += 1
+
+    pages_arr = [str(element) for element in pages_arr]
+    return {
+        "url": url,
+        "max_page": str(max_page),
+        "pages_arr": pages_arr,
+        "current_page": str(current_page),
+        "spaces": spaces
+    }
 
 def get_gamecard_info(game):
     date = None
