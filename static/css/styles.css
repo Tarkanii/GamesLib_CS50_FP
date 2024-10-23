@@ -31,7 +31,6 @@ html {
 }
 
 body {
-    flex-grow: 1;
     font-family: var(--font);
     font-size: var(--fs-m);
     color: var(--light-text-color);
@@ -91,6 +90,9 @@ body {
 }
 
 #searchForm {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin-right: 10px;
 }
 
@@ -119,7 +121,6 @@ body {
     height: 20px;
     background-image: url(/static/img/icons/cross.svg);
     background-size: contain;
-
 }
 
 .header__nav {
@@ -236,14 +237,17 @@ body {
 }
 
 .game-card:hover {
+    border-radius: 15px 15px 0 0;
     transform: scale(1.02);
     z-index: 1;
 }
 
 .game-card__img {
-    height: auto;
+    height: 200px;
     width: 100%;
     border-radius: 15px 15px 0 0;
+    background-size: cover;
+    background-position: center center;
 }
 
 .game-card__info {
@@ -335,7 +339,7 @@ body {
 
 .game-card__additional-info {
     position: absolute;
-    bottom: -125px;
+    top: calc(100% - 5px);
     left: 0;
     display: none;
     flex-direction: column;
@@ -359,7 +363,7 @@ body {
 .info-wrapper {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     justify-content: space-between;
     padding: 10px 0;
     color: var(--secondary-text-color);
@@ -368,6 +372,13 @@ body {
 
 .info-wrapper:not(:last-child) {
     border-bottom: 1px solid var(--secondary-text-color);
+}
+
+.info-wrapper .values {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    max-width: 50%;
 }
 
 .info-wrapper .values li {
@@ -381,7 +392,7 @@ body {
 }
 
 .info-wrapper .values li:not(:last-child):after {
-    content: ",";
+    content: ",\00a0";
     color: var(--light-text-color);
 }
 
@@ -438,13 +449,24 @@ body {
 
 /* GAME CONTENT */
 
-.game-bg {
+.game-bg-tint, .game-bg {
     position: fixed;
     top: 0;
     left: 0;
     height: 300px;
     width: 100vw;
+}
+
+.game-bg-tint {
     z-index: -1;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), var(--body-bg));
+}
+
+.game-bg {
+    z-index: -2;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
 }
 
 .back-button {
@@ -729,7 +751,7 @@ body {
 }
 
 .page-additional-info__list .list .iterable-value:not(:last-child)::after {
-    content: ",";
+    content: ",\00a0";
 }
 
 /* AUTH FORM */
@@ -825,9 +847,21 @@ body {
 }
 
 .submit-button:hover .loader,
-.submit-button:focus .loader {
+.submit-button:focus .loader,
+.back-button:hover .loader,
+.back-button:focus .loader {
     border: 3px solid var(--dark-text-color);
     border-bottom-color: transparent;
+}
+
+.pagination-list .loader {
+    width: 40px;
+    height: 40px;
+}
+
+#searchForm .loader {
+    width: 25px;
+    height: 25px;
 }
 
 .loader {
@@ -980,7 +1014,7 @@ body {
         height: min-content;
     }
 
-    .game-bg {
+    .game-bg-tint, .game-bg {
         height: 500px;
     }
 
@@ -1097,6 +1131,9 @@ body {
         width: calc(100% / 4 - 30px);
     }
 
+    .game-card__img {
+        height: 150px;
+    }
     
     .page-additional-info__list {
         flex-direction: row;

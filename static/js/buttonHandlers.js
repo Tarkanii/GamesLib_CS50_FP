@@ -54,11 +54,27 @@ export function backButtonHandler() {
     const backButton = document.querySelector(".back-button");
     if (!backButton) return;
 
+    const loadBtn = new LoadingHandler(backButton, backButton.innerHTML);
+    backButton.addEventListener("click", () => loadBtn.activate())
+
     if (!sessionStorage.getItem("prevUrl")) return;
     backButton.setAttribute("href", sessionStorage.getItem("prevUrl"));
 }
 
-export class LoadingButtonHandler {
+export function paginationButtonHandler() {
+    const paginationList = document.querySelector(".pagination-list");
+    if (!paginationList) return;
+
+    const paginationButtons = paginationList.querySelectorAll(".pagination-button:not(.active)");
+    paginationButtons.forEach((element) => {
+        element.addEventListener("click", () => {
+            const loadBtn = new LoadingHandler(paginationList, paginationList.innerHTML);
+            loadBtn.activate();
+        })
+    })
+}
+
+export class LoadingHandler {
     text = "";
     element = null;
 
@@ -70,6 +86,7 @@ export class LoadingButtonHandler {
     activate() {
         this.element.innerHTML = '<span class="loader"></span>';
         this.element.setAttribute("disabled", "true");
+        setTimeout(() => this.deactivate(), 5000);
     }
 
     deactivate() {
