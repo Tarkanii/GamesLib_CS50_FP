@@ -9,7 +9,7 @@ auth = Blueprint("auth", __name__)
 
 email_regex = r'^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
 
-@auth.route("/login", methods=["GET", "POST"])
+@auth.route("/login", methods = ["GET", "POST"])
 def login():
     if current_user.is_authenticated:
         return redirect("/my-library")
@@ -42,7 +42,7 @@ def login():
     else:
         return render_template("login.html", user = current_user, hints = {}, email = "")
     
-@auth.route("/signup", methods=["GET", "POST"])
+@auth.route("/signup", methods = ["GET", "POST"])
 def signup():
     if current_user.is_authenticated:
         return redirect("/my-library")

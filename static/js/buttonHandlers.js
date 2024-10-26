@@ -1,4 +1,13 @@
-export function burgerMenuHandler() {
+export function buttonsHandler() {
+    burgerMenuHandler();
+    modalCloseButtonHandler();
+    readMoreButtonHandler();
+    backButtonHandler();
+    paginationButtonHandler();
+    libraryButtonsHandler();
+}
+
+function burgerMenuHandler() {
     const menuButton = document.querySelector(".header__menu-button");
     const menu = document.querySelector(".nav-menu");
 
@@ -15,7 +24,7 @@ export function burgerMenuHandler() {
     })
 }
 
-export function modalCloseButtonHandler() {
+function modalCloseButtonHandler() {
     const modalButton = document.querySelector("#modalCloseButton");
     const modal = document.querySelector(".modal-bg");
 
@@ -24,7 +33,7 @@ export function modalCloseButtonHandler() {
     })
 }
 
-export function readMoreButtonHandler() {
+function readMoreButtonHandler() {
     const description = document.querySelector(".about-description");
     if (!description) return;
 
@@ -50,7 +59,7 @@ export function readMoreButtonHandler() {
     })
 }
 
-export function backButtonHandler() {
+function backButtonHandler() {
     const backButton = document.querySelector(".back-button");
     if (!backButton) return;
 
@@ -61,7 +70,7 @@ export function backButtonHandler() {
     backButton.setAttribute("href", sessionStorage.getItem("prevUrl"));
 }
 
-export function paginationButtonHandler() {
+function paginationButtonHandler() {
     const paginationList = document.querySelector(".pagination-list");
     if (!paginationList) return;
 
@@ -70,6 +79,48 @@ export function paginationButtonHandler() {
         element.addEventListener("click", () => {
             const loadBtn = new LoadingHandler(paginationList, paginationList.innerHTML);
             loadBtn.activate();
+        })
+    })
+}
+
+function libraryButtonsHandler() {
+    const libraryButtonList = document.querySelectorAll(".library-button");
+    if (!libraryButtonList.length) return;
+
+    libraryButtonList.forEach((button) => {
+        button.addEventListener("click", () => {
+            const action =  button.getAttribute("data-action");
+            const id = button.getAttribute("data-id");
+            
+            const loadBtn = new LoadingHandler(button, button.innerHTML);
+            switch(action) {
+                case "save":
+                    loadBtn.activate();
+                    fetch("/save-game", {
+                        method: "POST",
+                        body: JSON.stringify({ id })
+                    })
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(() => {
+                        loadBtn.deactivate();
+                    })
+                case "delete":
+                    loadBtn.activate();
+                    fetch("/delete-game", {
+                        method: "DELETE",
+                        body: JSON.stringify({ id })
+                    })
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(() => {
+                        loadBtn.deactivate();
+                    })
+                case "login":
+                    window.location.href = "/login";
+            }
         })
     })
 }

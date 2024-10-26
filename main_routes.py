@@ -1,8 +1,11 @@
-from flask import Blueprint, redirect, request, make_response, render_template
+from flask import Blueprint, redirect, request, render_template, make_response
 from flask_login import login_required, current_user
 from requests import get
 import datetime
 import math
+import json
+from . import db
+from .models import Game
 
 main = Blueprint("main", __name__)
 PLATFORMS_MAX = 5
@@ -15,7 +18,6 @@ def index():
 
 @main.route("/games")
 def games():
-
     page = request.args.get("page") or 1
     search = request.args.get("search") or None
     if search:
@@ -44,7 +46,50 @@ def game(game_id):
 @main.route("/my-library")
 @login_required
 def my_library():
-    return render_template("my-library.html", user = current_user)
+    games = []
+    
+    for game in current_user.games:
+        res = get(get_url(f"games/{game}"))
+
+        if res.status_code == 200:
+            games.append(get_gamecard_info(res.json()))
+
+    return render_template("my-library.html", user = current_user, games = games)
+
+@main.route("/save-game", methods = ["POST"])
+@login_required
+def save_game():
+    try:
+        body = json.loads(request.data)
+        id = body["id"]
+    except: 
+        return make_response({ "message": "Bad Request" }, 400)
+    
+    result = db.session.query(Game).filter(Game.game_id == int(id), Game.user_id == current_user.id)
+    if len(list(result)) == 0:
+        db.session.add(Game(int(id), current_user.id))
+        db.session.commit()
+    
+    return make_response({ "message": "Game saved" })
+
+
+@main.route("/delete-game", methods = ["DELETE"])
+@login_required
+def delete_game():
+    try:
+        body = json.loads(request.data)
+        id = body["id"]
+    except: 
+        return make_response({ "message": "Bad Request" }, 400)
+    
+    result = db.session.query(Game).filter(Game.game_id == int(id), Game.user_id == current_user.id)
+    if len(list(result)) > 0:
+        db.session.delete(result[0])
+        db.session.commit()
+    else:
+        return make_response({ "message": "Game not found" }, 400)
+    
+    return make_response({ "message": "Game deleted" }, 204)
 
 def get_url(path, queries = {}):
     query_params = ""
