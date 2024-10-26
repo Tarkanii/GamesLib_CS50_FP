@@ -4,4 +4,84 @@
 
 {% block main %}
 
+    <div class="container">
+        <h1 class="page-title">My Library</h1>
+        {% if games|length > 0 %}
+            <div class="games-list-container">
+                <ul class="games-list">
+                    {% for game in games %}
+
+                    <li class="game-card">
+
+                        {% if game.img %}
+                            <div class="game-card__img" style="background-image: url({{ game.img }});"></div>
+                        {% endif %}
+
+                        <div class="game-card__info">
+                            <div class="game-card__header">
+                                {% if game.platforms|length > 1 %}
+                                    <ul class="game-card__platforms-list">
+                                        {% for platform in game.platforms %}
+                                            <li class="platform">
+                                                <svg class="platform-icon">
+                                                    <use href="/static/img/icons/icons.svg#icon-{{ platform }}"></use>
+                                                </svg>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% if game.diff|length > 0 %}
+                                        <p class="diff">{{ game.diff }}</p>
+                                    {% endif %}
+                                {% endif %}
+                                {% if game.metacritic %}
+                                    <span class="metacritic-rating {{ game.metacritic_style }}">
+                                        {{ game.metacritic }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            
+
+                            <a href="/games/{{ game.id }}" class="game-card__link">
+                                {{ game.title }}
+                            {% if game.rating %}
+                                <img class="game-card__rating" src="/static/img/ratings/{{ game.rating }}.png" alt="{{ game.rating }}">
+                            {% endif %}
+                            </a>
+                        </div>
+                        <div class="game-card__additional-info">
+                            <ul class="additional-info-list">
+                                {% if game.released %}
+                                    <li class="info-wrapper">
+                                        <p class="key">Release Date:</p>
+                                        <p class="value">{{ game.released }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if game.genres|length > 0 %}
+                                    <li class="info-wrapper">
+                                        <p class="key">Genres</p>
+                                        <ul class="values">
+                                            {% for genre in game.genres %}
+                                                <li><a href="/">{{ genre }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                            {% if not current_user.is_authenticated %}
+                                <button class="library-button" data-action="login" data-id="{{ game.id }}">Save to library</button>
+                            {% elif game.id is in user.games %}
+                                <button class="library-button" data-action="delete" data-id="{{ game.id }}">Delete from library</button>
+                            {% else %}
+                                <button class="library-button" data-action="save" data-id="{{ game.id }}">Save to library</button>
+                            {% endif %}
+                    </li>
+
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <h2 class="not-found-title">No games found</h2>
+        {% endif %}
+    </div>
+
 {% endblock %}

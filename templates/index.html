@@ -73,7 +73,13 @@
                                 {% endif %}
                             </ul>
                             
-                            <button class="library-button">Save to library</button>
+                            {% if not current_user.is_authenticated %}
+                                <button class="library-button" data-action="login" data-id="{{ game.id }}">Save to library</button>
+                            {% elif game.id is in user.games %}
+                                <button class="library-button" data-action="delete" data-id="{{ game.id }}">Delete from library</button>
+                            {% else %}
+                                <button class="library-button" data-action="save" data-id="{{ game.id }}">Save to library</button>
+                            {% endif %}
                         </div>
                     </li>
 
@@ -81,7 +87,7 @@
                 </ul>
                 {% if pagination %}
 
-                    <ul class="pagination-list">
+                    <ul class="pagination-list"> 
                         {% for page in pagination.pages_arr %}
                    
                             {% if page == pagination.max_page and pagination.spaces[1] %}

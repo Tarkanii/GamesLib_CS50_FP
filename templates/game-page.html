@@ -34,7 +34,13 @@
             {% endif %}
         </div>
         <h1 class="page-title">{{ game.title }}</h1>
-        <button class="library-button page-button">Save to library</button>
+        {% if not current_user.is_authenticated %}
+            <button class="library-button page-button" data-action="login" data-id="{{ game.id }}">Save to library</button>
+        {% elif game.id is in user.games %}
+            <button class="library-button page-button" data-action="delete" data-id="{{ game.id }}">Delete from library</button>
+        {% else %}
+            <button class="library-button page-button" data-action="save" data-id="{{ game.id }}">Save to library</button>
+        {% endif %}
         <div class="rating-wrapper">
             {% if game.ratings_count > 0 %}
                 <p class="game-rating">

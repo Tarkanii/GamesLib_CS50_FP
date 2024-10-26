@@ -849,7 +849,9 @@ body {
 .submit-button:hover .loader,
 .submit-button:focus .loader,
 .back-button:hover .loader,
-.back-button:focus .loader {
+.back-button:focus .loader, 
+.library-button:hover .loader,
+.library-button:focus .loader {
     border: 3px solid var(--dark-text-color);
     border-bottom-color: transparent;
 }
