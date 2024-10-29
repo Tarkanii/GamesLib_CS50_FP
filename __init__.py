@@ -1,6 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from sqlalchemy.exc import SQLAlchemyError
+
+MESSAGE_500 = "500 Internal issue, try again later"
+MESSAGE_404 = "404 Page not found"
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -23,6 +27,9 @@ def create_app():
     from .models import User
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        try:
+            return User.query.get(int(id))
+        except SQLAlchemyError as e:
+            return None
     
     return app

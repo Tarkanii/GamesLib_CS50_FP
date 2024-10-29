@@ -71,6 +71,7 @@ function backButtonHandler() {
 
     if (!sessionStorage.getItem("prevUrl")) return;
     backButton.setAttribute("href", sessionStorage.getItem("prevUrl"));
+    sessionStorage.removeItem("prevUrl");
 }
 
 function paginationButtonHandler() {
@@ -109,6 +110,7 @@ function libraryButtonsHandler() {
                     .catch(() => {
                         loadBtn.deactivate();
                     })
+                    break;
                 case "delete":
                     loadBtn.activate();
                     fetch("/delete-game", {
@@ -121,8 +123,23 @@ function libraryButtonsHandler() {
                     .catch(() => {
                         loadBtn.deactivate();
                     })
+                    break;
                 case "login":
-                    window.location.href = "/login";
+                    loadBtn.activate()
+                    const modal = document.querySelector(".modal-bg");
+                    const button = modal.querySelector(".optional-button");
+
+                    button.classList.add("show");
+                    button.innerHTML = "Log In";
+                    button.addEventListener("click", () => window.location.href = "/login");
+
+                    modal.querySelector(".message").innerHTML = "To perform this action you need to be logged in";
+
+                    modal.classList.add("open");
+                    modal.querySelector("#modalCloseButton").addEventListener("click", () => {
+                        loadBtn.deactivate()
+                        button.removeEventListener("click", () => window.location.href = "/login");
+                    })
             }
         })
     })
@@ -140,7 +157,6 @@ export class LoadingHandler {
     activate() {
         this.element.innerHTML = '<span class="loader"></span>';
         this.element.setAttribute("disabled", "true");
-        setTimeout(() => this.deactivate(), 5000);
     }
 
     deactivate() {
