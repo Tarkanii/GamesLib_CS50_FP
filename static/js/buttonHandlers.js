@@ -10,16 +10,19 @@ export function buttonsHandler() {
 function burgerMenuHandler() {
     const menuButton = document.querySelector(".header__menu-button");
     const menu = document.querySelector(".nav-menu");
+    const header = document.querySelector(".header");
 
     menuButton.addEventListener("click", () => {
-        menu.classList.toggle("open");
-
         if (menu.classList.contains("open")) {
-            setTimeout(() => menu.classList.add("move"), 0);
-            menuButton.querySelector("use").setAttribute("href", "/static/img/icons/icons.svg#icon-cross")
-        } else {
             menu.classList.remove("move");
-            menuButton.querySelector("use").setAttribute("href", "/static/img/icons/icons.svg#icon-menu")
+            setTimeout(() => menu.classList.remove("open"), 200);
+            header.classList.remove("open")
+            menuButton.querySelector("use").setAttribute("href", "/static/img/icons/icons.svg#icon-menu");
+        } else {
+            header.classList.add("open");
+            menu.classList.add("open");
+            setTimeout(() => menu.classList.add("move"), 0);
+            menuButton.querySelector("use").setAttribute("href", "/static/img/icons/icons.svg#icon-cross");
         }
     })
 }
