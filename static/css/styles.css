@@ -3,6 +3,7 @@
     --light-text-color: white;
     --dark-text-color: black;
     --secondary-text-color: rgba(255, 255, 255, 0.4);
+    --burger-btn-hover: rgb(110, 110, 110);
     --error-color: rgb(210, 6, 6);
     --recommended-color: rgb(0, 125, 255);
     --success-color: rgb(29 238 37);
@@ -46,11 +47,22 @@ body {
 /* HEADER */
 
 .header {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     height: 80px;
+    z-index: 5;
+    transition: background-color var(--transition);
+}
+
+.header * {
+    z-index: inherit;
+}
+
+.header.open {
+    background-color: var(--body-bg);
 }
 
 .header .container {
@@ -85,7 +97,7 @@ body {
 
 .header__menu-button:hover .menu-icon,  
 .header__menu-button:focus .menu-icon {
-    stroke: var(--secondary-text-color);
+    stroke: var(--burger-btn-hover);
     transition: stroke var(--transition);
 }
 
@@ -129,20 +141,21 @@ body {
 
 .nav-menu {
     display: none;
-    position: fixed;
-    top: 80px;
+    position: absolute;
+    top: 100%;
     right: 0;
     min-height: 100%;
     width: 100%;
-    padding: 20px;
+    padding: 25px 0;
     background-color: var(--card-bg);
-    transform: translate(100%, 0);
+    transform: translate(0, -100%);
     transition: transform var(--transition);
-    z-index: 5;
+    z-index: 2;
 }
 
 .nav-menu.open {
-    display: block;
+    display: flex;
+    justify-content: center;
 }
 
 .nav-menu.open.move {
@@ -989,11 +1002,6 @@ body {
         margin-left: auto;
     }
 
-    .nav-menu {
-        border-top-left-radius: 15px;
-        max-width: 420px;
-    }
-
     .page-title {
         font-size: var(--fs-g);
     }
@@ -1077,6 +1085,10 @@ body {
     .header {
         height: auto;
         padding: 20px 0;
+    }
+
+    .header.open {
+        background-color: unset;
     }
 
     .container {

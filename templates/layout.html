@@ -33,17 +33,19 @@
                 </ul>
             </nav>
             <nav class="nav-menu">
-                <ul class="nav-menu__list">
-                    {% if user.is_authenticated %}
-                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
-                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/my-library">My Library</a></li>
-                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/logout">Log Out</a></li>
-                    {% else %}
-                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
-                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/login">Log In</a></li>
-                    <li class="nav-menu__list__element"><a class="nav-menu__link" href="/signup">Sign Up</a></li>
-                    {% endif %}
-                </ul>
+                <div class="container">
+                    <ul class="nav-menu__list">
+                        {% if user.is_authenticated %}
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/my-library">My Library</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/logout">Log Out</a></li>
+                        {% else %}
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/login">Log In</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/signup">Sign Up</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </nav>
         </div>
     </header>
