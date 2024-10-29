@@ -112,7 +112,7 @@
                         <h3 class="title">Genres</h3>
                         <ul class="list">
                             {% for genre in game.genres %}
-                                <li class="iterable-value"><a href="/" class="link">{{ genre }}</a></li>
+                                <li class="iterable-value"><a href="/games?genres={{ genre.id }}" class="link">{{ genre.name }}</a></li>
                             {% endfor %}
                         </ul>
                     </li>

@@ -20,17 +20,34 @@ def index():
 
 @main.route("/games")
 def games():
+    genres = []
     page = request.args.get("page") or 1
     search = request.args.get("search") or None
-    if search:
+    genre = request.args.get("genres") or None
+
+    if search and genre:
+        url = get_url("games", { "search": search, "page_size": PAGE_SIZE, "page": page, "genres": genre })
+    elif search and not genre:
         url = get_url("games", { "search": search, "page_size": PAGE_SIZE, "page": page })
+    elif not search and genre:
+        url = get_url("games", { "page_size": PAGE_SIZE, "page": page, "genres": genre })
     else:
         url = get_url("games", { "page_size": PAGE_SIZE, "page": page })
+
+    genres_res = get(get_url("genres"))
+    if genres_res.status_code == 200:
+        data = genres_res.json()
+        genres = data["results"]
+
+    genre_name = None
+    for genre_info in genres:
+        if str(genre_info["id"]) == genre:
+            genre_name = genre_info["name"]
 
     res = get(url)
     if res.status_code == 200:
         data = res.json()
-        pagination = get_pagination(data["count"], PAGE_SIZE, page, search)
+        pagination = get_pagination(data["count"], PAGE_SIZE, page, search, genre)
 
         games = list(map(get_gamecard_info, data["results"]))
     elif res.status_code != 404:
@@ -38,7 +55,7 @@ def games():
     elif res.status_code == 404:
         return render_template("error-page.html", user = current_user, message = MESSAGE_404)
 
-    return render_template("index.html", user = current_user, games = games, search = search, pagination = pagination)
+    return render_template("index.html", user = current_user, games = games, search = search, pagination = pagination, genre = genre_name, genres = genres)
 
 @main.route("/games/<game_id>")
 def game(game_id):
@@ -85,7 +102,6 @@ def save_game():
 
     return make_response({ "message": "Game saved" })
 
-
 @main.route("/delete-game", methods = ["DELETE"])
 @login_required
 def delete_game():
@@ -115,14 +131,18 @@ def get_url(path, queries = {}):
 
     return f"https://api.rawg.io/api/{path}?key=8ed35e34b6b447caa2701e9830460026{query_params}"
 
-def get_pagination(count, page_size, current_page, search):
+def get_pagination(count, page_size, current_page, search, genre):
     if count <= page_size:
         return None
     
     current_page = int(current_page)
 
-    if search:
+    if search and genre:
+        url = f"/games?search={search}&genres={genre}&page="
+    elif search and not genre:
         url = f"/games?search={search}&page="
+    elif not search and genre:
+        url = f"/games?genres={genre}&page="
     else:
         url = "/games?page="
 
@@ -185,7 +205,7 @@ def get_gamecard_info(game):
                 platforms.append(platform["platform"]["slug"])
 
     for genre in game["genres"]:
-        genres.append(genre["name"])
+        genres.append({ "name": genre["name"], "id": genre["id"] })
     
     for game_rating in game["ratings"]: 
         if game_rating["id"] == game["rating_top"]:
@@ -255,7 +275,7 @@ def get_game_content(game):
         platforms.append(platform["platform"]["name"])
 
     for genre in game["genres"]:
-        genres.append(genre["name"])
+        genres.append({ "name": genre["name"], "id": genre["id"] })
     
     for developer in game["developers"]:
         developers.append(developer["name"])

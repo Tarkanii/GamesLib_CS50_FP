@@ -5,12 +5,29 @@
 {% block main %}
 
     <div class="container">
-        {% if search %}
+        {% if search and genre %}
+            <h1 class="search-title">Search "{{ search }}" in {{ genre|lower }} games</h1>
+        {% elif search and not genre %}
             <h1 class="search-title">Search "{{ search }}"</h1>
+        {% elif not search and genre %}
+            <h1 class="page-title">{{ genre|capitalize }} games</h1>
         {% else %}
             <h1 class="page-title">All Games</h1>
         {% endif %}
-        
+
+        {% if genres|length > 0 %}
+            <ul class="genres-list">
+                {% for genre in genres %}
+                    <li class="genre-element">
+                        <a href="/games?genres={{ genre.id }}" class="genre-link">
+                            <div class="genre-img" style="background-image: url({{ genre.image_background }});"></div>
+                            {{ genre.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         {% if games|length > 0 %}
             <div class="games-list-container">
                 <ul class="games-list">
@@ -24,7 +41,7 @@
 
                         <div class="game-card__info">
                             <div class="game-card__header">
-                                {% if game.platforms|length > 1 %}
+                                {% if game.platforms|length > 0 %}
                                     <ul class="game-card__platforms-list">
                                         {% for platform in game.platforms %}
                                             <li class="platform">
@@ -66,7 +83,7 @@
                                         <p class="key">Genres</p>
                                         <ul class="values">
                                             {% for genre in game.genres %}
-                                                <li><a href="/">{{ genre }}</a></li>
+                                                <li><a href="/games?genres={{ genre.id }}">{{ genre.name }}</a></li>
                                             {% endfor %}
                                         </ul>
                                     </li>
