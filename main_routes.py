@@ -6,6 +6,8 @@ import math
 import json
 from . import db
 from .models import Game
+from sqlalchemy.exc import SQLAlchemyError
+from . import MESSAGE_500, MESSAGE_404
 
 main = Blueprint("main", __name__)
 PLATFORMS_MAX = 5
@@ -31,6 +33,10 @@ def games():
         pagination = get_pagination(data["count"], PAGE_SIZE, page, search)
 
         games = list(map(get_gamecard_info, data["results"]))
+    elif res.status_code != 404:
+        return render_template("error-page.html", user = current_user, message = MESSAGE_500)
+    elif res.status_code == 404:
+        return render_template("error-page.html", user = current_user, message = MESSAGE_404)
 
     return render_template("index.html", user = current_user, games = games, search = search, pagination = pagination)
 
@@ -40,6 +46,10 @@ def game(game_id):
 
     if res.status_code == 200:
         data = res.json()
+    elif res.status_code != 404:
+        return render_template("error-page.html", user = current_user, message = MESSAGE_500)
+    elif res.status_code == 404:
+        return render_template("error-page.html", user = current_user, message = MESSAGE_404)
 
     return render_template("game-page.html", user = current_user, game = get_game_content(data))
 
@@ -65,11 +75,14 @@ def save_game():
     except: 
         return make_response({ "message": "Bad Request" }, 400)
     
-    result = db.session.query(Game).filter(Game.game_id == int(id), Game.user_id == current_user.id)
-    if len(list(result)) == 0:
-        db.session.add(Game(int(id), current_user.id))
-        db.session.commit()
-    
+    try:
+        result = db.session.query(Game).filter(Game.game_id == int(id), Game.user_id == current_user.id)
+        if len(list(result)) == 0:
+            db.session.add(Game(int(id), current_user.id))
+            db.session.commit()
+    except SQLAlchemyError:
+        return render_template("error-page.html", user = current_user, message = MESSAGE_500)
+
     return make_response({ "message": "Game saved" })
 
 
@@ -82,12 +95,15 @@ def delete_game():
     except: 
         return make_response({ "message": "Bad Request" }, 400)
     
-    result = db.session.query(Game).filter(Game.game_id == int(id), Game.user_id == current_user.id)
-    if len(list(result)) > 0:
-        db.session.delete(result[0])
-        db.session.commit()
-    else:
-        return make_response({ "message": "Game not found" }, 400)
+    try:
+        result = db.session.query(Game).filter(Game.game_id == int(id), Game.user_id == current_user.id)
+        if len(list(result)) > 0:
+            db.session.delete(result[0])
+            db.session.commit()
+        else:
+            return make_response({ "message": "Game not found" }, 400)
+    except SQLAlchemyError:
+        return render_template("error-page.html", user = current_user, message = MESSAGE_500)
     
     return make_response({ "message": "Game deleted" }, 204)
 
