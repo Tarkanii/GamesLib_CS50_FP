@@ -224,6 +224,50 @@ body {
     background-size: contain;
 }
 
+/* GENRES LIST */
+
+.genres-list {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 20px;
+}
+
+.genre-element {
+    text-wrap: nowrap;
+}
+
+.genre-element:not(:last-child) {
+    margin-right: 20px;
+}
+
+.genre-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--light-text-color);
+    font-size: var(--fs-l);
+    transition: color var(--transition);
+}
+
+.genre-link:hover, .genre-link:focus {
+    color: var(--secondary-text-color);
+}
+
+.genre-img {
+    border-radius: 10px;
+    margin-right: 10px;
+    min-height: 40px;
+    min-width: 40px;
+    max-height: 40px;
+    max-width: 40px;
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
 /* GAMES LIST */
 
 .games-list-container {
@@ -1166,6 +1210,18 @@ body {
 
     .form-title {
         font-size: var(--fs-xxl);
+    }
+
+    .genres-list {
+        flex-wrap: wrap;
+    }
+
+    .genre-element {
+        margin-bottom: 20px;
+    }
+
+    .genre-link {
+        text-wrap: wrap;
     }
 
     .game-card {
