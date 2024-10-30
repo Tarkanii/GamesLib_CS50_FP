@@ -1,33 +1,11 @@
 {% extends "layout.html" %}
 
-{% block title%}GamesLib{% endblock %}
+{% block title %}My Library{% endblock %}
 
 {% block main %}
 
     <div class="container">
-        {% if search and genre %}
-            <h1 class="search-title">Search "{{ search }}" in {{ genre|lower }} games</h1>
-        {% elif search and not genre %}
-            <h1 class="search-title">Search "{{ search }}"</h1>
-        {% elif not search and genre %}
-            <h1 class="page-title">{{ genre|capitalize }} games</h1>
-        {% else %}
-            <h1 class="page-title">All Games</h1>
-        {% endif %}
-
-        {% if genres|length > 0 %}
-            <ul class="genres-list">
-                {% for genre in genres %}
-                    <li class="genre-element">
-                        <a href="/games?genres={{ genre.id }}" class="genre-link">
-                            <div class="genre-img" style="background-image: url({{ genre.image_background }});"></div>
-                            {{ genre.name }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
+        <h1 class="page-title">My Library</h1>
         {% if games|length > 0 %}
             <div class="games-list-container">
                 <ul class="games-list">
@@ -41,7 +19,7 @@
 
                         <div class="game-card__info">
                             <div class="game-card__header">
-                                {% if game.platforms|length > 0 %}
+                                {% if game.platforms|length > 1 %}
                                     <ul class="game-card__platforms-list">
                                         {% for platform in game.platforms %}
                                             <li class="platform">
@@ -89,7 +67,6 @@
                                     </li>
                                 {% endif %}
                             </ul>
-                            
                             {% if not current_user.is_authenticated %}
                                 <button class="library-button" data-action="login" data-id="{{ game.id }}">Save to library</button>
                             {% elif game.id is in user.games %}
@@ -97,45 +74,14 @@
                             {% else %}
                                 <button class="library-button" data-action="save" data-id="{{ game.id }}">Save to library</button>
                             {% endif %}
-                        </div>
                     </li>
 
                     {% endfor %}
                 </ul>
-                {% if pagination %}
-
-                    <ul class="pagination-list"> 
-                        {% for page in pagination.pages_arr %}
-                   
-                            {% if page == pagination.max_page and pagination.spaces[1] %}
-                                <li class="pagination-list__element space">
-                                    ...
-                                </li>
-                            {% endif %}
-                            <li class="pagination-list__element">
-                                {% if page == pagination.current_page %}
-                                    <span class="pagination-button active">
-                                        {{ page }}
-                                    </span>
-                                {% else %}
-                                    <a class="pagination-button" href="{{ pagination.url + page }}">
-                                        {{ page }}
-                                    </a>
-                                {% endif %}
-                            </li>          
-                            {% if page == "1" and pagination.spaces[0] %}
-                                <li class="pagination-list__element space">
-                                    ...
-                                </li>
-                            {% endif %}
-                          
-                        {% endfor %}
-                    </ul>
-        
-                {% endif %}
             </div>
         {% else %}
             <h2 class="not-found-title">No games found</h2>
         {% endif %}
     </div>
+
 {% endblock %}

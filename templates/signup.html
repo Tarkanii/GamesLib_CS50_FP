@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title%}Sign Up{% endblock %}
+
+{% block main %}
+<div class="container auth-container">
+    <form class="form" method="post" id="signupForm">
+        <h2 class="form-title">Sign Up</h2>
+        <div class="input-container">
+            <input class="input" required autocomplete="off" placeholder="Email"  type="text" name="email" value="{{ values.email }}">
+            {% if hints.email %}<span class="hint">{{ hints.email }}</span>{% endif %}
+        </div>
+        <div class="input-container">
+            <input class="input" required autocomplete="off" placeholder="Password"  type="password" name="password" value="{{ values.password }}">
+            {% if hints.password %}<span class="hint">{{ hints.password }}</span>{% endif %}
+        </div>
+        <div class="input-container">
+            <input class="input" required autocomplete="off" placeholder="Password Confirmation"  type="password" name="confirmation" value="{{ values.confirmation }}">
+            {% if hints.confirmation %}<span class="hint">{{ hints.confirmation }}</span>{% endif %}
+        </div>
+
+        <button class="submit-button" type="submit">Sign Up</button>
+    </form>
+</div>
+<p>Already have an account? <a href="/login" class="form-link">Log In</a></p>
+<div class="signup-bg"></div>
+{% endblock %}

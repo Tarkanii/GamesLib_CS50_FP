@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title%}Log In{% endblock %}
+
+{% block main %}
+    <div class="container auth-container">
+        <form class="form" method="post" id="loginForm">
+            <h2 class="form-title">Log In</h2>
+            <div class="input-container">
+                <input class="input" required autocomplete="off" placeholder="Email"  type="text" name="email" value="{{ email }}">
+                {% if hints.email %}<span class="hint">{{ hints.email }}</span>{% endif %}
+            </div>
+            <div class="input-container">
+                <input class="input" required autocomplete="off" placeholder="Password"  type="password" name="password">
+                {% if hints.password %}<span class="hint">{{ hints.password }}</span>{% endif %}
+            </div>
+
+            <button class="submit-button" type="submit">Log In</button>
+        </form>
+    </div>
+    <p>Don't have an account? <a href="/signup" class="form-link">Sign Up</a></p>
+    <div class="login-bg"></div>
+{% endblock %}

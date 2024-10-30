@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="/static/img/icons/favicon.svg">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">GamesLib</a>
+            <form action="/games" id="searchForm">
+                <input class="search" autocomplete="off" type="search" name="search" placeholder="Search">
+            </form>
+            <button class="header__menu-button">
+                <svg width="40" height="40" class="menu-icon">
+                    <use href="/static/img/icons/icons.svg#icon-menu"></use>
+                </svg>
+            </button>
+            <nav class="header__nav">
+                <ul class="nav-list">
+                    {% if user.is_authenticated %}
+                    <li class="nav-list__element"><a class="nav-list__link" href="/games">All Games</a></li>
+                    <li class="nav-list__element"><a class="nav-list__link" href="/my-library">My Library</a></li>
+                    <li class="nav-list__element"><a class="nav-list__link" href="/logout">Log Out</a></li>
+                    {% else %}
+                    <li class="nav-list__element"><a class="nav-list__link" href="/games">All Games</a></li>
+                    <li class="nav-list__element"><a class="nav-list__link" href="/login">Log In</a></li>
+                    <li class="nav-list__element"><a class="nav-list__link" href="/signup">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <nav class="nav-menu">
+                <div class="container">
+                    <ul class="nav-menu__list">
+                        {% if user.is_authenticated %}
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/my-library">My Library</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/logout">Log Out</a></li>
+                        {% else %}
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/games">All Games</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/login">Log In</a></li>
+                        <li class="nav-menu__list__element"><a class="nav-menu__link" href="/signup">Sign Up</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main class="main">
+        {% block main %}{% endblock %}
+    </main>
+    <footer></footer>
+    <div class="modal-bg">
+        <div class="modal">
+            <button class="modal-close-button" id="modalCloseButton">
+                <svg class="close-button-icon">
+                    <use href="/static/img/icons/icons.svg#icon-cross"></use>
+                </svg>
+            </button>
+            <p class="message">Error</p>
+            <button class="optional-button"></button>
+        </div>
+    </div>
+    <script type="module" src="/static/js/index.js"></script>
+</body>
+</html>
