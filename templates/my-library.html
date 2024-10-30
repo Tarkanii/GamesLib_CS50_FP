@@ -61,7 +61,7 @@
                                         <p class="key">Genres</p>
                                         <ul class="values">
                                             {% for genre in game.genres %}
-                                                <li><a href="/">{{ genre }}</a></li>
+                                                <li><a href="/games?genres={{ genre.id }}">{{ genre.name }}</a></li>
                                             {% endfor %}
                                         </ul>
                                     </li>
