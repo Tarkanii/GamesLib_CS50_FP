@@ -1,11 +1,10 @@
-from flask import Blueprint, request, make_response, render_template, redirect, session
+from flask import Blueprint, request, render_template, redirect
 from re import fullmatch
-from . import db
+from .create_app import db, MESSAGE_500
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from sqlalchemy.exc import SQLAlchemyError
-from . import MESSAGE_500
 
 auth = Blueprint("auth", __name__)
 

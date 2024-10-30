@@ -1,6 +1,6 @@
 from flask import render_template
 from flask_login import current_user
-from . import MESSAGE_404, MESSAGE_500
+from .create_app import MESSAGE_404, MESSAGE_500
 from .auth_routes import auth
 from .main_routes import main
 
