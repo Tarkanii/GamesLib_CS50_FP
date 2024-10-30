@@ -1,4 +1,4 @@
-from . import create_app
+from website.create_app import create_app
 
 app = create_app()
 

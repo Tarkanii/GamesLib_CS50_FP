@@ -4,10 +4,10 @@ from requests import get
 import datetime
 import math
 import json
-from . import db
+from .create_app import db
 from .models import Game
 from sqlalchemy.exc import SQLAlchemyError
-from . import MESSAGE_500, MESSAGE_404, API_KEY
+from .create_app import MESSAGE_500, MESSAGE_404, API_KEY
 
 main = Blueprint("main", __name__)
 PLATFORMS_MAX = 5
