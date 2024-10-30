@@ -7,7 +7,7 @@ import json
 from . import db
 from .models import Game
 from sqlalchemy.exc import SQLAlchemyError
-from . import MESSAGE_500, MESSAGE_404
+from . import MESSAGE_500, MESSAGE_404, API_KEY
 
 main = Blueprint("main", __name__)
 PLATFORMS_MAX = 5
@@ -129,7 +129,7 @@ def get_url(path, queries = {}):
     for key in queries:
         query_params += f"&{key}={queries[key]}"
 
-    return f"https://api.rawg.io/api/{path}?key=8ed35e34b6b447caa2701e9830460026{query_params}"
+    return f"https://api.rawg.io/api/{path}?key={API_KEY}{query_params}"
 
 def get_pagination(count, page_size, current_page, search, genre):
     if count <= page_size:
