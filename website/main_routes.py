@@ -212,7 +212,7 @@ def get_gamecard_info(game):
             rating = game_rating["title"]
 
     if "parent_platforms" in game and len(game["parent_platforms"]) - PLATFORMS_MAX > 0:
-        diff = f"+{len(game["parent_platforms"]) - PLATFORMS_MAX}"
+        diff = f"+{len(game['parent_platforms']) - PLATFORMS_MAX}"
 
     if game["metacritic"]:
         if game["metacritic"] > 75:
