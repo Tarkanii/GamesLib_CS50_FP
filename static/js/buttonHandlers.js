@@ -71,7 +71,6 @@ function backButtonHandler() {
 
     if (!sessionStorage.getItem("prevUrl")) return;
     backButton.setAttribute("href", sessionStorage.getItem("prevUrl"));
-    sessionStorage.removeItem("prevUrl");
 }
 
 function paginationButtonHandler() {
