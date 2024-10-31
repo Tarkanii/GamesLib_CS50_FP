@@ -1,1 +1,10 @@
-# GamesLib_CS50_FP
+# GamesLib
+#### Video Demo:  <[URL HERE](https://www.youtube.com/watch?v=5ydrVKI157o)>
+#### Description: 
+GamesLib is web application written with Python, JavaScript, HTML, CSS and additional libraries like sqlalchemy, flask-login and python-dotenv. Main functionality of my project is browsing games, you can search them by genre and query and open each game to see more detailed information. Additional functionality of the app would be creating your own account, which allows you to save games into your own library. As a source of all games related information I use rawg.io database. They store huge amount of games, that gives me opportunity to implement such features as genre filtering and pagination. To save users and games that they save to their libraries I use MySQL database hosted on AWS. All sensitive information like rawg api key, secret key and database connection string stored in .env file.
+
+On top of each page we have header that contains name of the project, link that takes us to main page, search input, submitting search will filter games by query that user typed in, and navigation links, depending on the width of the screen either in slide menu or as list of links.
+
+On the main page we have list of genres, below them games displayed as grid of cards, each having information about title, platforms, release date and genres of the game and in the very bottom of the page pagination if we have more than 20 games displayed. Clicking on the game title on the card takes us to game's page, where we can see such information as ratings, description, full list of platforms where this game is available, genres, developers etc. Also on the game page, same as on game card, we have 'save to library' button which depending on whether user is logged in will save the game to his library or will open modal window that informs user that he needs to be logged in to perform this action.
+
+On the sign up page we have sign up form, that consists of email field, password field and password confirmation field. All inputs are getting validated on server side after form submit. Log in page has pretty much the same functionality as sign up page, but having only email and password fields. Once account is created user can save games into his library and delete them from there.
