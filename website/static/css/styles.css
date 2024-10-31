@@ -257,6 +257,7 @@ body {
 }
 
 .genre-img {
+    opacity: 1;
     border-radius: 10px;
     margin-right: 10px;
     min-height: 40px;
@@ -266,6 +267,11 @@ body {
     background-size: cover;
     background-position: top center;
     background-repeat: no-repeat;
+    transition: opacity var(--transition);
+}
+
+.genre-link:hover .genre-img, .genre-link:focus .genre-img {
+    opacity: 0.4;
 }
 
 /* GAMES LIST */
